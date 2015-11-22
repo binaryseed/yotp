@@ -5,7 +5,9 @@ defmodule FaultToleranceTest do
   test "Step 1" do
     # Spawn a process
 
-    log = capture_log(fn -> StepOne.start end)
+    log = capture_log(fn ->
+      StepOne.start
+    end)
 
     assert log =~ "Hello, world"
   end
@@ -17,6 +19,18 @@ defmodule FaultToleranceTest do
 
     assert_receive :hey
     refute Process.alive?(pid)
+  end
+
+  test "Step 2.5" do
+    # Recieve a message in a process
+
+    pid = StepTwoPointFive.start(self)
+
+    log = capture_log(fn ->
+      send pid, "Hey"
+    end)
+
+    assert log =~ "Hey"
   end
 
   test "Step 3" do
