@@ -4,13 +4,17 @@ defmodule FaultToleranceTest do
 
   test "Step 1" do
     # Spawn a process
+
     log = capture_log(fn -> StepOne.start end)
+
     assert log =~ "Hello, world"
   end
 
   test "Step 2" do
     # Send a message back from a process
+
     pid = StepTwo.start(self)
+
     assert_receive :hey
     refute Process.alive?(pid)
   end
@@ -62,17 +66,31 @@ defmodule FaultToleranceTest do
     assert OTP.count(pid) == 3
   end
 
-  test "Step 7" do
+  test "Step 7 - YoSup" do
     # Start building a Supervisor
 
     pid = YoSup.start_link
 
     first_pid = YoSup.child(pid)
-
     Process.exit(first_pid, :blow)
     refute Process.alive? first_pid
 
     second_pid = YoSup.child(pid)
+    assert Process.alive? second_pid
+
+    refute first_pid == second_pid
+  end
+
+  test "Step 8 - Sup" do
+    # Use OTP Supervisor
+
+    {:ok, pid} = Sup.start_link
+
+    [{_, first_pid, _, _}] = Supervisor.which_children(pid)
+    Process.exit(first_pid, :blow)
+    refute Process.alive? first_pid
+
+    [{_, second_pid, _, _}] = Supervisor.which_children(pid)
     assert Process.alive? second_pid
 
     refute first_pid == second_pid
