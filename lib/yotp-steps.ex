@@ -1,3 +1,34 @@
+
+
+defmodule StepThree do
+  def start() do
+    spawn(__MODULE__, :loop, [])
+  end
+
+  def loop() do
+    receive do
+      {from, :ping} ->
+        send from, :pong
+      {from, :foo} ->
+        send from, :bar
+    end
+    loop()
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 defmodule StepFour do
   def start() do
     spawn(__MODULE__, :loop, [])
@@ -20,6 +51,10 @@ defmodule StepFour do
     end
   end
 end
+
+
+
+
 
 
 
@@ -58,3 +93,7 @@ defmodule StepFourPointFive do
     end
   end
 end
+
+
+
+

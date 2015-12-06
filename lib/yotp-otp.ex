@@ -8,14 +8,11 @@ defmodule OTP do
     {:ok, %{count: 0}}
   end
 
-  def ping(pid),  do: GenServer.call(pid, :ping)
-  def count(pid), do: GenServer.call(pid, :count)
-
-  def handle_call(:ping, from, state) do
+  def handle_call(:ping, _from, state) do
     {:reply, :pong, %{state | count: state.count+1}}
   end
 
-  def handle_call(:count, from, state) do
+  def handle_call(:count, _from, state) do
     {:reply, state.count, state}
   end
 end

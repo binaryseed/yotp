@@ -1,7 +1,12 @@
-defmodule FaultToleranceTest do
+#
+# * Concurrent Processes
+# * Strong Isolation
+# * Message Passing
+# * Fail Fast
+#
+
+defmodule YoTPTest do
   use ExUnit.Case
-  import ExUnit.CaptureLog
-  require Logger
 
   test "Step 1 - Spawn a process" do
 
@@ -65,8 +70,7 @@ defmodule FaultToleranceTest do
     assert Process.alive?(pid)
   end
 
-  test "Step 4" do
-    # Provide a client interface
+  test "Step 4 - Provide a client interface" do
 
     pid = StepFour.start
 
@@ -74,8 +78,7 @@ defmodule FaultToleranceTest do
     assert StepFour.call(pid, :foo) == :bar
   end
 
-  test "Step 4.5" do
-    # Add state to the process
+  test "Step 4.5 - Add state to the process" do
 
     pid = StepFourPointFive.start
 
@@ -84,8 +87,7 @@ defmodule FaultToleranceTest do
     assert StepFourPointFive.call(pid, :ping) == {:pong, 12}
   end
 
-  test "Step 5 - YoTP" do
-    # Add callbacks to generalize
+  test "Step 5 - YoTP - Add callbacks to generalize" do
 
     pid = YoTP.start
 
@@ -96,8 +98,7 @@ defmodule FaultToleranceTest do
     assert YoTP.call(pid, :count) == 3
   end
 
-  test "Step 6 - OTP" do
-    # Move to the full GenServer
+  test "Step 6 - OTP - Use OTP GenServer" do
 
     {:ok, pid} = OTP.start
 
@@ -107,50 +108,4 @@ defmodule FaultToleranceTest do
 
     assert GenServer.call(pid, :count) == 3
   end
-
-  test "Step 7 - YoSup" do
-    # a Supervisor
-
-    pid = YoSup.start_link
-
-    first_pid = YoSup.child(pid)
-    Process.exit(first_pid, :blow)
-    refute Process.alive? first_pid
-
-    second_pid = YoSup.child(pid)
-    assert Process.alive? second_pid
-
-    refute first_pid == second_pid
-  end
-
-  test "Step 8 - Sup" do
-    # Use OTP Supervisor
-
-    {:ok, pid} = Sup.start_link
-
-    [{_, first_pid, _, _}] = Supervisor.which_children(pid)
-    Process.exit(first_pid, :blow)
-    refute Process.alive? first_pid
-
-    [{_, second_pid, _, _}] = Supervisor.which_children(pid)
-    assert Process.alive? second_pid
-
-    refute first_pid == second_pid
-  end
 end
-
-#
-# * Concurrent Processes
-# * Strong Isolation
-# * Message Passing
-# * Fail Fast
-#
-
-
-
-
-
-
-
-
-

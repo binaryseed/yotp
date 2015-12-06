@@ -5,7 +5,8 @@ defmodule YoSup do
 
   def run(spec \\ init) do
     Process.flag(:trap_exit, true)
-    {supervise(spec), spec} |> loop
+    child = supervise(spec)
+    loop({child, spec})
   end
 
   def loop({child, spec}) do
