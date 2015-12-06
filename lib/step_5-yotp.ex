@@ -1,10 +1,12 @@
 defmodule YoTP do
+  # YoTP fake GenServer
+
   def start() do
     spawn(__MODULE__, :run, [])
   end
 
-  def run(state \\ init) do
-    state |> loop
+  def run() do
+    init |> loop
   end
 
   def loop(state) do

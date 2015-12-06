@@ -7,8 +7,10 @@ defmodule StepThree do
 
   def loop() do
     receive do
-      :ping -> Logger.debug("Pong!")
-      :foo  -> Logger.debug("Bar")
+      {from, :ping} ->
+        send from, :pong
+      {from, :foo} ->
+        send from, :bar
     end
     loop()
   end
