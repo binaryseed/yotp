@@ -24,6 +24,7 @@ defmodule YoSupTest do
         {:EXIT, _pid, _reason}=msg ->
           IO.puts "Caught #{inspect msg}"
       end
+      :timer.sleep(100)
     end)
 
     :timer.sleep(10)

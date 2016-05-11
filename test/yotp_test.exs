@@ -1,9 +1,13 @@
 #
 # Elixir/OTP
-#  == Fault Tolerance
-#     * Concurrent Processes
-#     * Strong Isolation
-#     * Message Passing
+#  = Erlang's goal: Fault Tolerance
+#    * Isolated, Lightweight Processes
+#    * Asynchronous Message Passing
+#
+#  = Primitives
+#    * spawn
+#    * send
+#    * receive
 #
 
 defmodule YoTPTest do
@@ -26,6 +30,7 @@ defmodule YoTPTest do
     receive do
       :hello -> IO.puts "Hello world"
     end
+
   end
 
   test "Step 3 - Recieve a message in another process" do
@@ -36,6 +41,7 @@ defmodule YoTPTest do
       end
     end)
     send pid, :foobar
+
   end
 
   test "Step 4 - Send and Recieve a message back" do
@@ -55,6 +61,7 @@ defmodule YoTPTest do
   test "Step 5 - Start a process via MFA" do
 
    spawn(YoTP.Five, :func, [{:argu, :ments}])
+
   end
 
   test "Step 6 - Start a receive loop in a process" do
@@ -72,6 +79,7 @@ defmodule YoTPTest do
     end
 
     assert Process.alive?(pid)
+
   end
 
   test "Step 7 - Provide a client interface" do
@@ -80,6 +88,7 @@ defmodule YoTPTest do
 
     assert YoTP.Seven.call(pid, :ping) == :pong
     assert YoTP.Seven.call(pid, :foo) == :bar
+
   end
 
   test "Step 8 - Add state to the process" do
@@ -89,6 +98,7 @@ defmodule YoTPTest do
     assert YoTP.Eight.call(pid, :ping) == {:pong, 1}
     assert YoTP.Eight.call(pid, :PING) == {:PONG, 11}
     assert YoTP.Eight.call(pid, :ping) == {:pong, 12}
+
   end
 
   test "Step 9 - YoTP - Add callbacks to generalize" do
@@ -100,6 +110,7 @@ defmodule YoTPTest do
     assert YoTP.call(pid, :ping) == :pong
 
     assert YoTP.call(pid, :count) == 3
+
   end
 
   test "OTP - Use OTP GenServer" do
@@ -111,5 +122,6 @@ defmodule YoTPTest do
     assert GenServer.call(pid, :ping) == :pong
 
     assert GenServer.call(pid, :count) == 3
+
   end
 end
