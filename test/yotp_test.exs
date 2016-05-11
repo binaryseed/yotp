@@ -3,11 +3,16 @@
 #  = Erlang's goal: Fault Tolerance
 #    * Isolated, Lightweight Processes
 #    * Asynchronous Message Passing
+#    * Pre-emptive Scheduling
 #
 #  = Primitives
 #    * spawn
 #    * send
 #    * receive
+#
+#  = Resources
+#    * http://ferd.ca/the-zen-of-erlang.html
+#    * http://ftp.nsysu.edu.tw/FreeBSD/ports/distfiles/erlang/armstrong_thesis_2003.pdf
 #
 
 defmodule YoTPTest do

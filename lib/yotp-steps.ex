@@ -66,16 +66,19 @@ defmodule YoTP.Eight do
   end
 
   def loop(state) do
-    receive do
+    new_state = receive do
       {from, :ping} ->
         new_state = state + 1
         send from, {:pong, new_state}
+        new_state
       {from, :PING} ->
         new_state = state + 10
         send from, {:PONG, new_state}
+        new_state
       {from, {:set, n}} ->
         new_state = n
         send from, {:PONG, new_state}
+        new_state
     end
     loop(new_state)
   end
