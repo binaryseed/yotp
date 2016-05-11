@@ -6,7 +6,7 @@ defmodule Sup do
   end
 
   def init(_) do
-    [worker(OTP, [])]
+    [worker(YoTP.OTP, [])]
     |> supervise(strategy: :one_for_one)
   end
 end

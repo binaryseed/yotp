@@ -1,6 +1,19 @@
 
 
-defmodule StepThree do
+
+
+
+defmodule YoTP.Five do
+  def func(args) do
+    IO.puts "#{inspect self}: #{inspect args}"
+  end
+end
+
+
+
+
+
+defmodule YoTP.Six do
   def start() do
     spawn(__MODULE__, :loop, [])
   end
@@ -20,16 +33,7 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-defmodule StepFour do
+defmodule YoTP.Seven do
   def start() do
     spawn(__MODULE__, :loop, [])
   end
@@ -56,17 +60,7 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-defmodule StepFourPointFive do
+defmodule YoTP.Eight do
   def start() do
     spawn(__MODULE__, :loop, [0])
   end
@@ -93,7 +87,3 @@ defmodule StepFourPointFive do
     end
   end
 end
-
-
-
-

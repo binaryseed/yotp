@@ -1,13 +1,13 @@
 
 
-defmodule YoSup.StepThree do
+defmodule YoSup.Three do
   def start(spec) do
     spawn(__MODULE__, :run, [spec])
   end
 
   def run({mod, args}) do
     {:ok, child} = apply(mod, :start_link, args)
-    loop(child)
+    child |> loop
   end
 
   def loop(child) do

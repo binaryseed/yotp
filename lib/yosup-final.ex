@@ -31,6 +31,6 @@ defmodule YoSup do
   # YoSup Callbacks
 
   def init do
-    {OTP, []}
+    {YoTP.OTP, []}
   end
 end

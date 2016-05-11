@@ -1,4 +1,4 @@
-defmodule OTP do
+defmodule YoTP.OTP do
   use GenServer
 
   def start,      do: GenServer.start(__MODULE__, :ok, [])

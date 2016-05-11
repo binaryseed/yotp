@@ -32,10 +32,10 @@ defmodule YoSupTest do
 
   test "YoSup 3 - specify a child" do
 
-    spec = {OTP, []}
-    pid = YoSup.StepThree.start(spec)
+    spec = {YoTP.OTP, []}
+    pid = YoSup.Three.start(spec)
 
-    child = YoSup.StepThree.child(pid)
+    child = YoSup.Three.child(pid)
 
     assert Process.alive?(pid)
     assert Process.alive?(child)
