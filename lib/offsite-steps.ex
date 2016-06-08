@@ -74,6 +74,11 @@ defmodule Offsite.Actor do
     {:ok, %{count: 0}}
   end
 
+  def handle_call(:hello, _from, state) do
+    IO.puts "Actor is alive #{inspect self}"
+    {:reply, :hi, state}
+  end
+
   def handle_call(:ping, _from, state) do
     {:reply, :pong, %{state | count: state.count+1}}
   end

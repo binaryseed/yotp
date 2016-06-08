@@ -28,6 +28,8 @@ defmodule OffsiteTest do
     end)
 
     :timer.sleep(10)
+
+    Process.alive?(pid)
     refute Process.alive?(pid)
 
   end
@@ -86,6 +88,7 @@ defmodule OffsiteTest do
       :bar -> IO.puts "Bar"
     end
 
+    Process.alive?(pid)
     assert Process.alive?(pid)
   end
 
@@ -100,12 +103,15 @@ defmodule OffsiteTest do
     end)
 
     :timer.sleep(10)
+
+    Process.alive?(pid)
     refute Process.alive?(pid)
   end
 
   test "Step 8 - Trap exits" do
 
     pid = spawn(fn ->
+      IO.puts "I'm alive #{inspect self}"
       Process.flag :trap_exit, true
       spawn_link(fn ->
         AlsoNot.a_function
@@ -114,19 +120,25 @@ defmodule OffsiteTest do
         {:EXIT, _pid, _reason}=msg ->
           IO.puts "Caught #{inspect msg}"
       end
+      IO.puts "I'm still alive #{inspect self}"
       :timer.sleep(100)
     end)
 
     :timer.sleep(10)
+
+    Process.alive?(pid)
     assert Process.alive?(pid)
   end
 
   test "Step 9 - specify a child" do
 
     spec = {Offsite.Actor, []}
-    pid = Step.Nine.start(spec)
 
+    pid = Step.Nine.start(spec)
     child = Step.Nine.child(pid)
+
+    Process.alive?(pid)
+    Process.alive?(child)
 
     assert Process.alive?(pid)
     assert Process.alive?(child)
@@ -140,12 +152,20 @@ defmodule OffsiteTest do
     pid = Offsite.Supervisor.start_link(spec)
 
     first_pid = Offsite.Supervisor.child(pid)
+    GenServer.call first_pid, :hello
+
     Process.exit(first_pid, :blow)
+
+    Process.alive? first_pid
     refute Process.alive? first_pid
 
     second_pid = Offsite.Supervisor.child(pid)
+    GenServer.call second_pid, :hello
+
+    Process.alive? second_pid
     assert Process.alive? second_pid
 
+    first_pid == second_pid
     refute first_pid == second_pid
   end
 
